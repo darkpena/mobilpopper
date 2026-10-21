@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#171a24">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22><rect rx=%2214%22 width=%2264%22 height=%2264%22 fill=%22%23ff7185%22/><text x=%2214%22 y=%2245%22 font-size=%2240%22>⌁</text></svg>">
+  <title>Paper Jam: Son Baskı</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main id="app">
+    <canvas id="game" aria-label="Paper Jam oyun alanı"></canvas>
+
+    <section id="startScreen" class="screen active">
+      <div class="hero-card">
+        <div class="receipt-logo"><span>PAPER</span><strong>JAM</strong><small>SON BASKI</small></div>
+        <p class="eyebrow">ETİKET A.Ş. • YETKİSİZ BASKI TESPİT EDİLDİ</p>
+        <h1>Dünyanın kurallarını<br><em>yeniden etiketle.</em></h1>
+        <p class="intro">PIP'i hurda bandından çıkar. Düşmanlara sticker yapıştır, yazıcı ısısını yönet ve çıkış kapısını çalıştır.</p>
+        <button id="startBtn" class="primary">KOŞUYU BAŞLAT <span>→</span></button>
+        <div class="howto">
+          <span><b>Hareket</b> WASD / sol pad</span>
+          <span><b>Nişan</b> Fare / sağ pad</span>
+          <span><b>Baskı</b> 1–4 / sticker düğmesi</span>
+        </div>
+      </div>
+      <div class="version">DİKEY KESİT • WEB PROTOTİPİ</div>
+    </section>
+
+    <section id="hud" class="hidden" aria-live="polite">
+      <div class="top-left panel">
+        <div class="pip-face"><i></i><i></i><span></span></div>
+        <div class="stats">
+          <div class="stat-row"><label>GÖVDE</label><div class="bar health"><i id="healthBar"></i></div><b id="healthText">100</b></div>
+          <div class="stat-row"><label>ISI</label><div class="bar heat"><i id="heatBar"></i></div><b id="heatText">0°</b></div>
+        </div>
+        <div class="paper"><span>KAĞIT</span><strong id="paperText">40</strong></div>
+      </div>
+
+      <div class="top-center">
+        <span id="roomLabel">ODA 1/4</span>
+        <strong id="objective">ALANI TEMİZLE</strong>
+      </div>
+
+      <button id="pauseBtn" class="icon-btn" aria-label="Duraklat">Ⅱ</button>
+
+      <div id="printer" class="printer panel">
+        <div class="printer-head">
+          <span>BASKI KUYRUĞU</span><b id="printerState">HAZIR</b>
+        </div>
+        <div class="progress"><i id="printProgress"></i></div>
+        <div id="queue" class="queue"><span></span><span></span><span></span></div>
+      </div>
+
+      <div id="stickers" class="stickers">
+        <button data-sticker="bomb" style="--ink:#ff735f"><kbd>1</kbd><i>💥</i><span>BOMBA</span><small>2 kâğıt</small></button>
+        <button data-sticker="snail" style="--ink:#86d98c"><kbd>2</kbd><i>🐌</i><span>SALYANGOZ</span><small>1 kâğıt</small></button>
+        <button data-sticker="electric" style="--ink:#70c7ff"><kbd>3</kbd><i>⚡</i><span>ELEKTRİK</span><small>2 kâğıt</small></button>
+        <button data-sticker="platform" style="--ink:#d9a7ff"><kbd>4</kbd><i>▰</i><span>PLATFORM</span><small>2 kâğıt</small></button>
+      </div>
+
+      <div id="movePad" class="touch-pad move-pad"><div class="pad-ring"><i></i></div><span>HAREKET</span></div>
+      <div id="aimPad" class="touch-pad aim-pad"><div class="pad-ring"><i></i></div><span>NİŞAN / AT</span></div>
+      <button id="dashBtn" class="action-btn"><i>➤</i><span>KAÇIN</span><small id="dashCd"></small></button>
+      <button id="interactBtn" class="action-btn interact hidden"><i>⚡</i><span>ÇALIŞTIR</span></button>
+    </section>
+
+    <section id="jamPanel" class="jam-panel hidden">
+      <div class="jam-paper">KAĞIT<br>SIKIŞTI!</div>
+      <div><b>RULOYU ÇEK</b><span>Basılı tutarak sıkışmayı temizle</span><div class="jam-progress"><i id="jamProgress"></i></div></div>
+      <button id="clearJamBtn">BASILI TUT</button>
+    </section>
+
+    <section id="pauseScreen" class="screen modal hidden">
+      <div class="dialog"><p class="eyebrow">BASKI DURAKLATILDI</p><h2>Mola zamanı.</h2><button id="resumeBtn" class="primary">DEVAM ET</button><button id="restartBtn" class="secondary">KOŞUYU YENİDEN BAŞLAT</button></div>
+    </section>
+
+    <section id="endScreen" class="screen modal hidden">
+      <div class="dialog result"><p class="eyebrow" id="resultEyebrow">KOŞU TAMAMLANDI</p><h2 id="resultTitle">Çıkış bulundu!</h2><div class="score-grid"><div><span>SÜRE</span><b id="finalTime">00:00</b></div><div><span>YOK EDİLEN</span><b id="finalKills">0</b></div><div><span>BASKI</span><b id="finalPrints">0</b></div></div><p id="resultText"></p><button id="againBtn" class="primary">YENİ KOŞU</button></div>
+    </section>
+
+    <div id="toast" role="status"></div>
+  </main>
+  <script src="game.js"></script>
+</body>
+</html>
